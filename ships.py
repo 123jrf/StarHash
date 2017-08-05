@@ -105,14 +105,18 @@ class Ship(object):
         if damage < 0:  damage = 0
         if lazdam < 0:  lazdam = 0
 
-        if lazdam > self.shields:
-            damage += lazdam
+        if self.shields <= 0:
+            lazdam += damage
+        elif damage > self.shields:
+            damage -= self.shields
+            self.shields = 0
+            lazdam += damage
         else:
-            self.shields -= lazdam
+            self.shields -= damage
 
-        self.defense -= damage
-
-        return damage
+        self.defense -= lazdam
+        
+        return lazdam
     
     def generate(self, pattern):
         """Generate the ship."""
